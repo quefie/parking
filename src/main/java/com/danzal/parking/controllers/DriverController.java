@@ -15,11 +15,9 @@ public class DriverController {
 
     private final DriverService driverService;
 
-
     public DriverController(DriverService driverService) {
         this.driverService = driverService;
     }
-
 
     @PostMapping("/start")
     @ResponseStatus(HttpStatus.CREATED)
