@@ -1,13 +1,12 @@
 package com.danzal.parking.services;
 
-import com.danzal.parking.domain.Currency;
-import com.danzal.parking.mappers.DriverMapper;
-import com.danzal.parking.models.DriverDTO;
 import com.danzal.parking.controllers.DriverController;
+import com.danzal.parking.domain.Currency;
 import com.danzal.parking.domain.Driver;
 import com.danzal.parking.domain.DriverType;
+import com.danzal.parking.mappers.DriverMapper;
+import com.danzal.parking.models.DriverDTO;
 import com.danzal.parking.repositories.DriverRepository;
-
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +55,7 @@ public class DriverServiceImpl implements DriverService {
         return saveAndReturnDTO(driverMapper.driverDTOToDriver(driverDTO));
     }
 
-    private DriverDTO saveAndReturnDTO(Driver driver){
+    private DriverDTO saveAndReturnDTO(Driver driver) {
         Driver savedDriver = driverRepository.save(driver);
         DriverDTO returnedDTO = driverMapper.driverToDriverDTO(savedDriver);
         returnedDTO.setDriverUrl(getDriverUrl(savedDriver.getId()));
@@ -69,7 +68,7 @@ public class DriverServiceImpl implements DriverService {
     public boolean checkTicketValid(Long id) {
 
         DriverDTO driverDTO = findDriverById(id);
-        if(driverDTO.isTicket_active()){
+        if (driverDTO.isTicket_active()) {
             return true;
         }
 
@@ -93,18 +92,19 @@ public class DriverServiceImpl implements DriverService {
         DriverDTO returnedDriverDTO = driverRepository.findById(id).map(driver -> {
             driver.setStopTime(formattedDate);
             driver.setTicket_active(false);
+            calculateAmountToPay(id);
             DriverDTO returnDTO = driverMapper.driverToDriverDTO(driverRepository.save(driver));
-            return driverDTO;
+            return returnDTO;
         }).orElseThrow(ResourceNotFoundException::new);
 
         returnedDriverDTO.setDriverUrl(getDriverUrl(id));
-        calculateAmountToPay(id);
+
         dayProfitService.saveOrUpdateDayProfit(driverDTO.getTransactionDay());
 
         return returnedDriverDTO;
     }
 
-    private void calculateAmountToPay(Long id){
+    private void calculateAmountToPay(Long id) {
         DriverDTO driverDTO = findDriverById(id);
         long hours = 0;
 
@@ -112,19 +112,19 @@ public class DriverServiceImpl implements DriverService {
         hours = calcHours(id);
 
 
-        if(driverDTO.getDriverType() == DriverType.VIP){
-            if(hours > 2) {
+        if (driverDTO.getDriverType() == DriverType.VIP) {
+            if (hours > 2) {
                 amountToPay = (float) (2 + 1.2 * 2 * (hours - 2));
 
-            }else if (hours > 1 && hours < 2){
+            } else if (hours > 1 && hours < 2) {
                 amountToPay = 2.0f;
             }
-        }else {
-            if(hours > 2) {
+        } else {
+            if (hours > 2) {
                 amountToPay = (float) (1 + 2 + 1.5 * 2 * (hours - 2));
-            }else if (hours > 1 && hours < 2){
+            } else if (hours > 1 && hours < 2) {
                 amountToPay = 3.0f;
-            }else {
+            } else {
                 amountToPay = 1.0f;
             }
         }
@@ -149,10 +149,10 @@ public class DriverServiceImpl implements DriverService {
             Date date2 = format.parse(driverDTO.getStopTime());
             long diff = date2.getTime() - date1.getTime();
 
-            long diffTime = diff / (60* 60 * 1000) % 24;
+            long diffTime = diff / (60 * 60 * 1000) % 24;
             return diffTime;
 
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -168,7 +168,7 @@ public class DriverServiceImpl implements DriverService {
 
     // ============= CHECK CURRENCY METHOD ===============
     @Override
-    public Currency checkCurrency(Long id){
+    public Currency checkCurrency(Long id) {
         return findDriverById(id).getCurrency();
     }
 
@@ -187,7 +187,7 @@ public class DriverServiceImpl implements DriverService {
     }
 
 
-    private String getDriverUrl(Long id){
+    private String getDriverUrl(Long id) {
         return DriverController.BASE_URL + "/" + id;
     }
 }

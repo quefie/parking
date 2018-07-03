@@ -1,7 +1,6 @@
 package com.danzal.parking.controllers;
 
 import com.danzal.parking.domain.Currency;
-import com.danzal.parking.domain.Driver;
 import com.danzal.parking.domain.DriverType;
 import com.danzal.parking.models.DriverDTO;
 import com.danzal.parking.services.DriverService;
@@ -12,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.text.DateFormat;
@@ -20,18 +18,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-public class DriverControllerTest extends AbstractRestControllerTest{
+public class DriverControllerTest extends AbstractRestControllerTest {
 
     @Mock
     DriverService driverService;
@@ -42,7 +34,7 @@ public class DriverControllerTest extends AbstractRestControllerTest{
     MockMvc mockMvc;
 
     @Before
-    public void setUp() throws Exception{
+    public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
         mockMvc = MockMvcBuilders.standaloneSetup(driverController)
@@ -51,7 +43,7 @@ public class DriverControllerTest extends AbstractRestControllerTest{
     }
 
     @Test
-    public void testStartParkingMeter() throws Exception{
+    public void testStartParkingMeter() throws Exception {
         DriverDTO driverDTO = new DriverDTO();
         driverDTO.setCurrency(Currency.PLN);
         driverDTO.setDriverType(DriverType.VIP);
@@ -71,8 +63,8 @@ public class DriverControllerTest extends AbstractRestControllerTest{
         when(driverService.startParkingMeter(driverDTO)).thenReturn(returnDTO);
 
         mockMvc.perform(post(DriverController.BASE_URL + "/start")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(asJsonString(driverDTO)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(driverDTO)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.startTime", equalTo(formattedTime)))
                 .andExpect(jsonPath("$.currency", equalTo("PLN")))
@@ -82,18 +74,18 @@ public class DriverControllerTest extends AbstractRestControllerTest{
     }
 
     @Test
-    public void testCheckTicketValid() throws Exception{
+    public void testCheckTicketValid() throws Exception {
 
         when(driverService.checkTicketValid(anyLong())).thenReturn(true);
 
-        mockMvc.perform(get(DriverController.BASE_URL+ "/1/check"))
+        mockMvc.perform(get(DriverController.BASE_URL + "/1/check"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("true"));
 
     }
 
     @Test
-    public void testStopParkingMeter() throws Exception{
+    public void testStopParkingMeter() throws Exception {
 
         DriverDTO driverDTO = new DriverDTO();
         driverDTO.setCurrency(Currency.PLN);
@@ -114,8 +106,8 @@ public class DriverControllerTest extends AbstractRestControllerTest{
         when(driverService.stopParkingMeter(anyLong())).thenReturn(returnDTO);
 
         mockMvc.perform(put(DriverController.BASE_URL + "/1/stop")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(asJsonString(driverDTO)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(driverDTO)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.stopTime", equalTo(formattedTime)))
                 .andExpect(jsonPath("$.currency", equalTo("PLN")))
@@ -126,28 +118,28 @@ public class DriverControllerTest extends AbstractRestControllerTest{
     }
 
     @Test
-    public void testCheckAmoutToPay() throws Exception{
+    public void testCheckAmoutToPay() throws Exception {
 
         when(driverService.checkAmountToPay(anyLong())).thenReturn(1.0f);
 
-        mockMvc.perform(get(DriverController.BASE_URL+ "/1/cost"))
+        mockMvc.perform(get(DriverController.BASE_URL + "/1/cost"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("1.0"));
     }
 
     @Test
-    public void testGetDriverCurrency() throws Exception{
+    public void testGetDriverCurrency() throws Exception {
 
         when(driverService.checkCurrency(anyLong())).thenReturn(Currency.PLN);
 
-        mockMvc.perform(get(DriverController.BASE_URL+ "/1/currency"))
+        mockMvc.perform(get(DriverController.BASE_URL + "/1/currency"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("\"PLN\""));
 
     }
 
     @Test
-    public void testGetDriverInfo() throws Exception{
+    public void testGetDriverInfo() throws Exception {
 
         DriverDTO driverDTO = new DriverDTO();
         driverDTO.setCurrency(Currency.PLN);

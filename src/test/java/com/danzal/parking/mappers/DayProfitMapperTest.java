@@ -15,7 +15,7 @@ public class DayProfitMapperTest {
     DayProfitMapper dayProfitMapper = DayProfitMapper.INSTANCE;
 
     @Test
-    public void testDayProfitToDayProfitDTO() throws Exception{
+    public void testDayProfitToDayProfitDTO() throws Exception {
 
         DayProfit dayProfit = new DayProfit();
         dayProfit.setCurrency(CURRENCY);
@@ -29,7 +29,7 @@ public class DayProfitMapperTest {
     }
 
     @Test
-    public void testDriverDTOToDriver() throws Exception{
+    public void testDriverDTOToDriver() throws Exception {
 
         DayProfitDTO dayProfitDTO = new DayProfitDTO();
         dayProfitDTO.setCurrency(CURRENCY);

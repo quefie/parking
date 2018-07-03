@@ -15,7 +15,7 @@ public class DriverMapperTest {
     DriverMapper driverMapper = DriverMapper.INSTANCE;
 
     @Test
-    public void testDriverToDriverDTO() throws Exception{
+    public void testDriverToDriverDTO() throws Exception {
         Driver driver = new Driver();
         driver.setCurrency(CURRENCY);
         driver.setDriverType(DRIVER_TYPE);
@@ -28,7 +28,7 @@ public class DriverMapperTest {
     }
 
     @Test
-    public void testDriverDTOToDriver() throws Exception{
+    public void testDriverDTOToDriver() throws Exception {
         DriverDTO driverDTO = new DriverDTO();
         driverDTO.setCurrency(CURRENCY);
         driverDTO.setDriverType(DRIVER_TYPE);

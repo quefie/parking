@@ -9,16 +9,12 @@ import com.danzal.parking.repositories.DriverRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static org.hamcrest.CoreMatchers.any;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class DayProfitServiceTest {
@@ -33,15 +29,15 @@ public class DayProfitServiceTest {
     DayProfitRepository dayProfitRepository;
 
     @Before
-    public void setUp() throws Exception{
+    public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        dayProfitService = new DayProfitServiceImpl(driverRepository ,dayProfitRepository, DayProfitMapper.INSTANCE);
+        dayProfitService = new DayProfitServiceImpl(driverRepository, dayProfitRepository, DayProfitMapper.INSTANCE);
 
     }
 
     @Test
-    public void testGetProfitDayInfo () throws Exception{
+    public void testGetProfitDayInfo() throws Exception {
         DayProfit dayProfit = new DayProfit();
         dayProfit.setId(1L);
         dayProfit.setDate(DATE);
@@ -52,12 +48,12 @@ public class DayProfitServiceTest {
         DayProfitDTO dayProfitDTO = dayProfitService.getProfitDayInfo(DATE);
 
         assertEquals(DATE, dayProfitDTO.getDate());
-        assertEquals(3L, dayProfitDTO.getProfit(),0.0);
+        assertEquals(3L, dayProfitDTO.getProfit(), 0.0);
 
     }
 
     @Test
-    public void testCheckDayProfit() throws Exception{
+    public void testCheckDayProfit() throws Exception {
         DayProfit dayProfit = new DayProfit();
         dayProfit.setDate(DATE);
         dayProfit.setProfit(3L);
@@ -66,12 +62,12 @@ public class DayProfitServiceTest {
 
         float profit = dayProfitService.checkDayProfit(DATE);
 
-        assertEquals(dayProfit.getProfit(), profit,0.0);
+        assertEquals(dayProfit.getProfit(), profit, 0.0);
 
     }
 
     @Test
-    public void testGetDayProfitCurrency() throws Exception{
+    public void testGetDayProfitCurrency() throws Exception {
 
         DayProfit dayProfit = new DayProfit();
         dayProfit.setCurrency(Currency.PLN);
@@ -82,7 +78,6 @@ public class DayProfitServiceTest {
 
         assertEquals(dayProfit.getCurrency(), currency);
     }
-
 
 
 }

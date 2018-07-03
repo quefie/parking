@@ -13,7 +13,7 @@ public interface DriverService {
 
     DriverDTO findDriverById(Long id);
 
-    public Currency checkCurrency(Long id);
+    Currency checkCurrency(Long id);
 
     float checkAmountToPay(Long id);
 

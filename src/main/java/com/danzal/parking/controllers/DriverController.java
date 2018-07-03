@@ -15,11 +15,9 @@ public class DriverController {
 
     private final DriverService driverService;
 
-
     public DriverController(DriverService driverService) {
         this.driverService = driverService;
     }
-
 
     @PostMapping("/start")
     @ResponseStatus(HttpStatus.CREATED)
@@ -46,8 +44,6 @@ public class DriverController {
     @ResponseStatus(HttpStatus.OK)
     public float checkAmoutToPay(@PathVariable Long id){
         return driverService.checkAmountToPay(id);
-
-       // return driverService.findDriverById(id).getAmountToPay();
     }
 
     @GetMapping("/{id}/currency")

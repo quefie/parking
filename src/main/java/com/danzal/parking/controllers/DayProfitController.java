@@ -30,6 +30,8 @@ public class DayProfitController {
     @ResponseStatus(HttpStatus.OK)
     public DayProfitDTO getDayProfitInfo(@PathVariable String year, @PathVariable String month, @PathVariable String day) {
         String date = year + "/" + month + "/" + day;
+
+
         return dayProfitService.getProfitDayInfo(date);
     }
 

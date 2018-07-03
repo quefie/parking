@@ -74,7 +74,7 @@ public class DayProfitServiceImpl implements DayProfitService {
 
         DayProfit dayProfit = dayProfitRepository.findByDate(date).get();
         dayProfit.setProfit(calcDayProfit(date));
-        dayProfitMapper.dayProfitToDayProfitDTO(dayProfit);
+        saveAndReturnDTO(dayProfit);
     }
 
     private DayProfitDTO createDay(String date) {
@@ -100,17 +100,17 @@ public class DayProfitServiceImpl implements DayProfitService {
 
         List<Driver> drivers = driverRepository.findAll();
 
-        float dayProfit = 0.0f;
+        float profit = 0.0f;
 
         for (Driver driver : drivers
                 ) {
 
             if (Objects.equals(driver.getTransactionDay(), date)) {
-                dayProfit = dayProfit + driver.getAmountToPay();
+                profit = profit + driver.getAmountToPay();
             }
-        }
+                    }
 
-        return dayProfit;
+        return profit;
     }
 
 
